@@ -32,3 +32,12 @@ def handle_general_exception(request: Request, exc: Exception):
         status_code=500,
         content={"error": f"Unexpected error: {str(exc)}"}
     )
+
+
+from slowapi.errors import RateLimitExceeded
+
+async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content={"error": "Rate limit exceeded. Please try again later."},
+    )
