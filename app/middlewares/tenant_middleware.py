@@ -1,7 +1,7 @@
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import Response, JSONResponse
 
-from ..db.session import init_db
+from ..db.session import get_db
 from fastapi import Request
 from sqlalchemy.orm import Session
 from sqlalchemy import text
@@ -12,7 +12,7 @@ class TenantMiddleWare(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         if request.url.path.startswith("/tenants"):
             return await call_next(request)
-        db : Session = next(init_db())
+        db : Session = next(get_db())
         tenant_name = request.headers.get('X-Tenant')
         print(tenant_name)
         if tenant_name is None:
