@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import init_db
+from app.db.session import get_db
 from app.models.models import User
 from app.utils.auth import create_token
 from datetime import timedelta
@@ -16,7 +16,7 @@ class LoginRequest(BaseModel):
 
 
 @auth_router.post("/auth/login/")
-def login_for_access_token(login_data: LoginRequest, db: Session = Depends(init_db)):
+def login_for_access_token(login_data: LoginRequest, db: Session = Depends(get_db)):
     tenant_name = login_data.tenant
 
     user = db.query(User).filter(User.email == login_data.email).first()

@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16
-    container_name: multi_tenant_postgres
+  citus_coordinator:
+    image: citusdata/citus
+    container_name: citus_coordinator
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -12,7 +12,32 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - citus_coordinator_data:/var/lib/postgresql/data
+    depends_on:
+      - citus_worker1
+      - citus_worker2
+
+  citus_worker1:
+    image: citusdata/citus
+    container_name: citus_worker1
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: raja
+      POSTGRES_DB: multi_tenant_db
+    volumes:
+      - citus_worker1_data:/var/lib/postgresql/data
+
+  citus_worker2:
+    image: citusdata/citus
+    container_name: citus_worker2
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: raja
+      POSTGRES_DB: multi_tenant_db
+    volumes:
+      - citus_worker2_data:/var/lib/postgresql/data
   mongodb:
     image: mongo:6.0
     container_name: mongo_container
@@ -28,7 +53,11 @@ services:
 
 
 volumes:
-  postgres_data:
+  citus_coordinator_data:
     driver:  local
+  citus_worker1_data:
+    driver: local
+  citus_worker2_data:
+    driver: local
   mongo_data:
     driver: local

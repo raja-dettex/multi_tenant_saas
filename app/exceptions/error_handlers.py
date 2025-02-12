@@ -23,7 +23,7 @@ def handle_integrity_error(request : Request, error: IntegrityError):
 def handle_database_error(request: Request, exc: SQLAlchemyError):
     return JSONResponse(
         status_code=500,
-        content={"error": "A database error occurred. Please try again later."}
+        content={"error": f"A database error occurred. Please try again later. {exc}"}
     )
 
 
