@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  api:
+    build: .
+    container_name: multi_tenant_api
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - mongodb
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://<dbusername>:<dbpassword>@postgres:5432/multi_tenant_db
+      - MONGO_URI=mongodb://<username>:<password>@mongodb:27017/audit_logs_db
+      - SECRET_KEY=your-secret-key
+
   citus_coordinator:
     image: citusdata/citus
     container_name: citus_coordinator
