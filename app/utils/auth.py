@@ -4,7 +4,7 @@ import jwt
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from app.db.session import init_db
+from app.db.session import init_db, get_db
 from app.models.models import User
 import os
 
@@ -31,7 +31,7 @@ def verify_token(token: str):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-def get_current_user(token: str = Security(oauth2scheme), db: Session=Depends(init_db)) -> User:
+def get_current_user(token: str = Security(oauth2scheme), db: Session=Depends(get_db)) -> User:
     payload = verify_token(token)
     email = payload['sub']
     tenant = payload['tenant']

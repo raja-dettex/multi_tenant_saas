@@ -38,17 +38,7 @@ services:
       POSTGRES_DB: multi_tenant_db
     volumes:
       - citus_worker2_data:/var/lib/postgresql/data
-  mongodb:
-    image: mongo:6.0
-    container_name: mongo_container
-    restart: always
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-    volumes:
-      - mongo_data:/data/db
+  
 
 
 
@@ -61,3 +51,30 @@ volumes:
     driver: local
   mongo_data:
     driver: local
+
+
+# mongodb:
+#     image: mongo:6.0
+#     container_name: mongo_container
+#     restart: always
+#     ports:
+#       - "27017:27017"
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: admin
+#       MONGO_INITDB_ROOT_PASSWORD: secret
+#     volumes:
+#       - mongo_data:/data/db
+# api:
+#     build: .
+#     container_name: multi_tenant_api
+#     restart: always
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - postgres
+#       - mongodb
+#       - redis
+#     environment:
+#       - DATABASE_URL=postgresql://<dbusername>:<dbpassword>@postgres:5432/multi_tenant_db
+#       - MONGO_URI=mongodb://<username>:<password>@mongodb:27017/audit_logs_db
+#       - SECRET_KEY=your-secret-key

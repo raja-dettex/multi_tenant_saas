@@ -10,15 +10,21 @@ class Tenant(Base):
     __tablename__ = "tenants"
 
     id = Column(Integer, primary_key=True)  # ✅ Partition key, part of PK
-    name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    password = Column(String, nullable=False)
     schema_name = Column(String, nullable=False)
 
     users = relationship("User", back_populates="tenant")
 
-    def __init__(self, name: str, schema_name: str):
-        self.name = name
-        self.schema_name = schema_name
 
+    def hash_password(self, password: str) -> str:
+        return pwd_context.hash(password)
+    def __init__(self, username: str, schema_name: str, password: str, email: str):
+        self.schema_name = schema_name
+        self.password = self.hash_password(password)
+        self.username = username
+        self.email = email
     __table_args__ = (
         Index("idx_tenants_schema", "schema_name"),  # ✅ Index instead of unique constraint
     )

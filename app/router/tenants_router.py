@@ -4,22 +4,25 @@ from app.db.session import get_db
 from app.models.models import Tenant
 from app.services.tenant_service import create_tenant
 from pydantic import BaseModel
-
+from fastapi.responses import JSONResponse
 tenant_router = APIRouter()
-
+import json
 # Pydantic schema for tenant creation request
 class TenantCreate(BaseModel):
-    name: str
+    username: str
+    email: str
+    password: str
 
 # Create Tenant API
 @tenant_router.post("/tenants/")
 def create_tenant_api(tenant_data: TenantCreate, db: Session = Depends(get_db)):
     print(tenant_data)
-    existing_tenant = db.query(Tenant).filter(Tenant.name == tenant_data.name).first()
-    print(existing_tenant)
-    if existing_tenant:
-        raise HTTPException(status_code=400, detail="Tenant already exists")
+    
 
-    tenant = create_tenant(db, tenant_data.name)
+    tenant = create_tenant(db, tenant_data.username, email=tenant_data.email, password=tenant_data.password)
     print(tenant)
-    return {"id": tenant.id, "name": tenant.name, "schema_name": tenant.schema_name}
+    return JSONResponse(status_code=201, content={"tenant_id": tenant.id, "username": tenant.username, "email": tenant.email, 
+                                                  "users": [
+                                                      {"username": user.username, 
+                                                       "email": user.email,} for user in tenant.users
+                                                  ]})
