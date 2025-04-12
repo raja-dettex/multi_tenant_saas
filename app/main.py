@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi.errors import RateLimitExceeded
+
 from app.db.session import init_db
 from app.middlewares.tenant_middleware import TenantMiddleWare
 from app.router.users_router import router
