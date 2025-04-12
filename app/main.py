@@ -34,7 +34,7 @@ app.include_router(router=audit_logs_router)
 app.add_exception_handler( IntegrityError, handle_integrity_error)
 app.add_exception_handler(SQLAlchemyError, handle_database_error)
 app.add_exception_handler(Exception, handle_general_exception)
-app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+#app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 
 
 uvicorn.run(app=app, host='0.0.0.0', port=8000)
