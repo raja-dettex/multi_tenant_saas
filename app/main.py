@@ -9,6 +9,7 @@ from app.router.auth_router import auth_router
 from app.router.audit_logs_router import  audit_logs_router
 from app.exceptions.error_handlers import handle_integrity_error, handle_database_error, handle_general_exception, \
     rate_limit_exceeded_handler
+import uvicorn
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 app = FastAPI(title="Multi-Tenant SaaS")
@@ -34,3 +35,6 @@ app.add_exception_handler( IntegrityError, handle_integrity_error)
 app.add_exception_handler(SQLAlchemyError, handle_database_error)
 app.add_exception_handler(Exception, handle_general_exception)
 app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+
+
+uvicorn.run(app=app, host='0.0.0.0', port=8000)
