@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.db.session import init_db
-from app.middlewares.tenant_middleware import TenantMiddleWare
-from app.router.users_router import router
-from app.router.tenants_router import tenant_router
-from app.router.auth_router import auth_router
-from app.router.audit_logs_router import  audit_logs_router
-from app.exceptions.error_handlers import handle_integrity_error, handle_database_error, handle_general_exception, \
+from db.session import init_db
+from middlewares.tenant_middleware import TenantMiddleWare
+from router.users_router import router
+from router.tenants_router import tenant_router
+from router.auth_router import auth_router
+from router.audit_logs_router import  audit_logs_router
+from exceptions.error_handlers import handle_integrity_error, handle_database_error, handle_general_exception, \
     rate_limit_exceeded_handler
 import uvicorn
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError

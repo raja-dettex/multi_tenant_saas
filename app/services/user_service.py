@@ -1,8 +1,8 @@
 from typing import List
 
 from sqlalchemy.orm import Session
-from ..dto.users import UserResponse, UserCreate
-from ..models.models import User, Tenant
+from dto.users import UserResponse, UserCreate
+from models.models import User, Tenant
 import sys
 sys.path.append("..")
 

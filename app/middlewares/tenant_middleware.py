@@ -1,7 +1,7 @@
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import Response, JSONResponse
 
-from ..db.session import get_db
+from db.session import get_db
 from fastapi import Request
 from sqlalchemy.orm import Session
 from sqlalchemy import text

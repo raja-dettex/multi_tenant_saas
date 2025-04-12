@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from app.models.models import Tenant, User
+from models.models import Tenant, User
 from typing import List, Tuple
 
 class TenantResponse:

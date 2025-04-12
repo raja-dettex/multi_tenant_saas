@@ -1,5 +1,5 @@
-from app.db.mongo import get_audit_logs_collection
-from app.models.mongo_models import AuditLogModel
+from db.mongo import get_audit_logs_collection
+from models.mongo_models import AuditLogModel
 from typing import List
 audit_logs_collection = get_audit_logs_collection()
 
