@@ -62,7 +62,7 @@ def get_all_users(request: Request, db: Session = Depends(get_db), current_user:
     return get_all(db)
 
 
-@router.get("/users/tenant/{tenand_id}")
+@router.get("/users/tenant/{tenant_id}")
 def get_users_by_tenantId(request: Request, db: Session = Depends(get_db)):
     tenant_id = request.path_params.get('tenant_id')
     if tenant_id:
