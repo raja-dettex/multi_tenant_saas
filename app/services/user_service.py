@@ -55,9 +55,13 @@ def get_all(db : Session ) -> List[UserResponse]:
 
 def get_by_tenant_id(db: Session, tenant_id: int) -> List[UserResponse]:
     users = db.query(User).filter_by(tenant_id=tenant_id).all()
-    return [UserResponse(
-        username=user.username,
-        email = user.email,
-        password=user.password,
-        tenant_id=user.tenant_id
-    ) for user in users if user is not None]
+    tenant = db.query(Tenant).filter_by(id=tenant_id).first()
+    if tenant:
+        return [UserResponse(
+            username=user.username,
+            email = user.email,
+            password=user.password,
+            tenant_id=user.tenant_id,
+            tenant_username=tenant.username
+        ) for user in users if user is not None]
+    return []
