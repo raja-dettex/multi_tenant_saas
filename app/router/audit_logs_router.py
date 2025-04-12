@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
-from app.db.mongo import get_audit_logs_collection
-from ..models.models import User
-from ..models.mongo_models import AuditLogModel
-from app.utils.auth import get_current_user
-from ..utils.audit_logs import find_logs_by_user
+from db.mongo import get_audit_logs_collection
+from models.models import User
+from models.mongo_models import AuditLogModel
+from utils.auth import get_current_user
+from utils.audit_logs import find_logs_by_user
 from typing import List
 from pydantic import BaseModel
 from datetime import datetime

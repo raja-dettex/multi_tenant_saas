@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from ..db.session import get_db
-from ..dto.users import UserCreate, UserResponse
+from db.session import get_db
+from dto.users import UserCreate, UserResponse
 from sqlalchemy.orm import Session
 from fastapi import Request
-from ..models.models import User
-from ..services.user_service import create, get_by_name, get_all
-from ..utils.auth import get_current_user
-from ..utils.audit_logs import  log_action
+from models.models import User
+from services.user_service import create, get_by_name, get_all
+from utils.auth import get_current_user
+from utils.audit_logs import  log_action
 from typing import List
 from sqlalchemy import text
 

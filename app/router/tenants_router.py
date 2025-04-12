@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app.models.models import Tenant
-from app.services.tenant_service import create_tenant
+from db.session import get_db
+from models.models import Tenant
+from services.tenant_service import create_tenant
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 tenant_router = APIRouter()

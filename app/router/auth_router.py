@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app.models.models import User
-from app.utils.auth import create_token
+from db.session import get_db
+from models.models import User
+from utils.auth import create_token
 from datetime import timedelta
 from pydantic import BaseModel
 
