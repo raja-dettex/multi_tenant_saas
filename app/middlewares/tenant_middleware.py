@@ -7,14 +7,18 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 import sys
 sys.path.append("..")
-
+import json
 class TenantMiddleWare(BaseHTTPMiddleware):
+    print("here")
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        
         if request.url.path.startswith("/tenants"):
             return await call_next(request)
+        
         db : Session = next(get_db())
-        tenant_name = request.headers.get('X-Tenant')
-        print(tenant_name)
+        print(request.headers)
+        tenant_name = request.headers.get('x-tenant')
+        print("tenant is ", tenant_name)
         if tenant_name is None:
             return JSONResponse(content={"error" : "Tenant header missing"}, status_code=400)
         try:

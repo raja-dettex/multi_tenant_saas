@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from ..db.session import get_db
 from ..dto.users import UserCreate, UserResponse
 from sqlalchemy.orm import Session
@@ -8,11 +9,17 @@ from ..services.user_service import create, get_by_name, get_all
 from ..utils.auth import get_current_user
 from ..utils.audit_logs import  log_action
 from typing import List
+from sqlalchemy import text
+import sys
+sys.path.append("..")
 router = APIRouter()
 
 
 @router.post("/users/", response_model=UserResponse)
 def create_user(request: Request, user: UserCreate, db: Session =  Depends(get_db)):
+    header = request.headers.get('X-Tenant')
+    print("header is " , header)
+    #db.execute(text(f"set search_path to {header}"))
     user_resp: UserResponse = create(user, db)
     log_action(
         user_email=user_resp.email,
@@ -22,7 +29,7 @@ def create_user(request: Request, user: UserCreate, db: Session =  Depends(get_d
         ip_address=request.client.host if request.client else "Unknown",
         user_agent=request.headers.get("User-Agent", "Unknown")
         )
-    return user_resp
+    return JSONResponse(status_code=201, content={"username": user_resp.username, "email": user_resp.email, "tenant_id": user_resp.tenant_id, "tenant_username": user_resp.tenant_username})  
 
 
 @router.get("/users/{username}", response_model=UserResponse)

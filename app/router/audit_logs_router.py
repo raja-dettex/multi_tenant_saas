@@ -7,7 +7,10 @@ from ..utils.audit_logs import find_logs_by_user
 from typing import List
 from pydantic import BaseModel
 from datetime import datetime
+import sys
+sys.path.append("..")
 audit_logs_router = APIRouter()
+
 
 class AuditLogResponse(BaseModel):
     user_email: str

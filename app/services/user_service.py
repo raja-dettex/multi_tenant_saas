@@ -2,15 +2,25 @@ from typing import List
 
 from sqlalchemy.orm import Session
 from ..dto.users import UserResponse, UserCreate
-from ..models.models import User
-
+from ..models.models import User, Tenant
+import sys
+sys.path.append("..")
 
 def create(user_create: UserCreate, db: Session) -> UserResponse:
+    user = get_by_name(user_create.username, db)
+    if user:
+        return UserResponse(
+            username=user.username,
+            email=user.email,
+            password=user.password,
+            tenant_id=user.tenant_id
+        )
+    tenant = db.query(Tenant).filter_by(schema_name=user_create.tenant_username).first()
     user = User(
         username= user_create.username,
         email = user_create.email,
         password= User.hash_password(user_create.password),
-        tenant_id=user_create.tenant_id
+        tenant_id=tenant.id
     )
     db.add(user)
     db.commit()
@@ -19,7 +29,8 @@ def create(user_create: UserCreate, db: Session) -> UserResponse:
         username=user.username,
         email=user.email,
         password=user.password,
-        tenant_id=user.tenant_id
+        tenant_id=user.tenant_id,
+        tenant_username=tenant.username
     )
 
 
