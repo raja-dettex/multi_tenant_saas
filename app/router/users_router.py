@@ -5,7 +5,7 @@ from dto.users import UserCreate, UserResponse
 from sqlalchemy.orm import Session
 from fastapi import Request
 from models.models import User
-from services.user_service import create, get_by_name, get_all
+from services.user_service import create, get_by_name, get_all, get_by_tenant_id
 from utils.auth import get_current_user
 from utils.audit_logs import  log_action
 from typing import List
@@ -60,5 +60,20 @@ def get_all_users(request: Request, db: Session = Depends(get_db), current_user:
         user_agent=request.headers.get("User-Agent", "Unknown")
         )
     return get_all(db)
+
+
+@router.get("/users/tenant/{tenand_id}")
+def get_users_by_tenantId(request: Request, db: Session = Depends(get_db)):
+    tenant_id = request.path_params.get('tenant_id')
+    if tenant_id:
+            
+        log_action(
+            action="CREATE USER BY TenantId API_ACCESS",
+            endpoint=str(request.url.path),
+            ip_address=request.client.host if request.client else "Unknown",
+            user_agent=request.headers.get("User-Agent", "Unknown")
+            )
+        return get_by_tenant_id(db, tenant_id=int(tenant_id))
+    return JSONResponse(status_code=400, content={'message': 'invalid tenant id '})
 
 
