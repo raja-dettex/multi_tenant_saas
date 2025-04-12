@@ -66,13 +66,6 @@ def get_all_users(request: Request, db: Session = Depends(get_db), current_user:
 def get_users_by_tenantId(request: Request, db: Session = Depends(get_db)):
     tenant_id = request.path_params.get('tenant_id')
     if tenant_id:
-            
-        log_action(
-            action="CREATE USER BY TenantId API_ACCESS",
-            endpoint=str(request.url.path),
-            ip_address=request.client.host if request.client else "Unknown",
-            user_agent=request.headers.get("User-Agent", "Unknown")
-            )
         return get_by_tenant_id(db, tenant_id=int(tenant_id))
     return JSONResponse(status_code=400, content={'message': 'invalid tenant id '})
 
